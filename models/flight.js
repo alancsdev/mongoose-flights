@@ -10,7 +10,7 @@ const flightSchema = new mongoose.Schema(
       enum: ['AUS', 'DFW', 'DEN', 'LAX', 'SAN'],
       default: 'DEN',
     },
-    flightNo: { type: Number, required: true, min: 0, max: 9999 },
+    flightNo: { type: Number, required: true, min: 10, max: 9999 },
     departs: {
       type: Date,
       default: () =>
