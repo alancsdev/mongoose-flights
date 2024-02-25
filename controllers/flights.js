@@ -16,7 +16,6 @@ async function index(req, res) {
       flight.departed = true;
     }
   });
-  console.log(flights);
   res.render('flights/index', { flights });
 }
 

@@ -17,7 +17,12 @@
       <td><%= f.airline %></td>
       <td><%= f.airport %></td>
       <td><%= f.flightNo %></td>
-      <td class="<%= f.departed ? 'red' : ''%>"><%= f.departs %></td>
+      <td class="<%= f.departed ? 'red' : ''%>">
+        <%= new Date(f.departs).toLocaleDateString(undefined, { year: 'numeric',
+        month: '2-digit', day: '2-digit'}) %> <%= new
+        Date(f.departs).toLocaleTimeString(undefined, { hour: 'numeric', minute:
+        'numeric', hour12: true })%>
+      </td>
     </tr>
     <!-- Close the forEach using EJS here -->
     <% }); %>
