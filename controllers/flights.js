@@ -24,8 +24,8 @@ function newFlight(req, res) {
   // We'll want to be able to render an
   // errorMsg if the create action fails
   const newFlight = new Flight();
-  const date = new Date();
-  console.log(date);
+  //const date = new Date();
+  const date = newFlight.departs;
   // Format the date for the value attribute of the input
   let departsDate = `${date.getFullYear()}-${(date.getMonth() + 1)
     .toString()
