@@ -1,0 +1,81 @@
+<%- include('../partials/header') %>
+
+<div class="container-details">
+  <h2 class="section-title">Flight Details</h2>
+  <div class="flight-info">
+    <p class="flight-info-item">
+      <span class="info-label">Airline:</span> <%= flight.airline %>
+    </p>
+    <p class="flight-info-item">
+      <span class="info-label">Airport:</span> <%= flight.airport %>
+    </p>
+    <p class="flight-info-item">
+      <span class="info-label">Flight No.:</span> <%= flight.flightNo %>
+    </p>
+    <p class="flight-info-item">
+      <span class="info-label">Departs:</span> <%= new
+      Date(flight.departs).toLocaleString() %>
+    </p>
+  </div>
+
+  <div class="destinations">
+    <h3 class="section-subtitle">Destinations:</h3>
+    <% flight.destinations.forEach(function(destination) { %>
+    <div class="destination">
+      <p class="destination-item">
+        <span class="info-label">Airport:</span> <%= destination.airport %>
+      </p>
+      <p class="destination-item">
+        <span class="info-label <%= destination.departed ? 'red' : ''%>"
+          >Arrival:</span
+        >
+        <%= new Date(destination.arrival).toLocaleString() %>
+      </p>
+      <form
+        action="/flights/<%= flight._id %>/destinations/<%= destination._id %>?_method=DELETE"
+        method="POST"
+      >
+        <button type="submit">Delete</button>
+      </form>
+    </div>
+    <% }); %>
+  </div>
+
+  <% let date = new Date(); let newDate = new Date(date);
+  newDate.setDate(date.getDate() + 1); let dateFormatted =
+  `${newDate.getFullYear()}-${(newDate.getMonth() + 1).toString().padStart(2,
+  '0')}-${newDate.getDate().toString().padStart(2,
+  '0')}T${newDate.getHours().toString().padStart(2,
+  '0')}:${newDate.getMinutes().toString().padStart(2, '0')}`; %> <%=
+  console.log(flight.destinations);%>
+
+  <form
+    id="add-flight-form"
+    method="POST"
+    action="/flights/<%= flight._id %>/destinations"
+  >
+    <label>Destination:</label>
+    <label
+      >Airport:
+      <select name="airport">
+        <option value="AUS">AUS</option>
+        <option value="DFW">DFW</option>
+        <option value="DEN" selected>DEN</option>
+        <option value="LAX">LAX</option>
+        <option value="SAN">SAN</option>
+      </select>
+    </label>
+    <label
+      >Arrival:
+      <input
+        type="datetime-local"
+        name="arrival"
+        value="<%= dateFormatted %>"
+      />
+    </label>
+
+    <button type="submit">Add Destination</button>
+  </form>
+
+  <%- include('../partials/footer') %>
+</div>

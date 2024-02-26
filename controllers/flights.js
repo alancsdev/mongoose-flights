@@ -2,6 +2,7 @@ const Flight = require('../models/flight');
 
 module.exports = {
   index,
+  show,
   new: newFlight,
   create,
 };
@@ -16,7 +17,20 @@ async function index(req, res) {
       flight.departed = true;
     }
   });
-  res.render('flights/index', { flights });
+  res.render('flights/index', { title: 'All Flights', flights });
+}
+
+async function show(req, res) {
+  const flight = await Flight.findById(req.params.id);
+  flight.destinations.sort(
+    (destA, destB) => Number(destA.arrival) - Number(destB.arrival)
+  );
+  flight.destinations.forEach((dest, index) => {
+    if (Number(dest.arrival) < Number(new Date())) {
+      dest.departed = true;
+    }
+  });
+  res.render('flights/show', { title: 'Flight Details', flight });
 }
 
 function newFlight(req, res) {
@@ -32,7 +46,7 @@ function newFlight(req, res) {
   departsDate += `-${date.getDate().toString().padStart(2, '0')}T${date
     .toTimeString()
     .slice(0, 5)}`;
-  res.render('flights/new', { errorMsg: '', departsDate });
+  res.render('flights/new', { Title: 'Add Flight', errorMsg: '', departsDate });
 }
 
 async function create(req, res) {
