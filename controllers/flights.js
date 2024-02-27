@@ -1,4 +1,5 @@
 const Flight = require('../models/flight');
+const Ticket = require('../models/ticket');
 
 module.exports = {
   index,
@@ -8,10 +9,10 @@ module.exports = {
 };
 
 async function index(req, res) {
-  const flights = await Flight.find({});
-  flights.sort(
-    (flightA, flightB) => Number(flightA.departs) - Number(flightB.departs)
-  );
+  const flights = await Flight.find({}).sort('departs');
+  // flights.sort(
+  //   (flightA, flightB) => Number(flightA.departs) - Number(flightB.departs)
+  // );
   flights.forEach((flight, index) => {
     if (Number(flight.departs) < Number(new Date())) {
       flight.departed = true;
@@ -21,7 +22,8 @@ async function index(req, res) {
 }
 
 async function show(req, res) {
-  const flight = await Flight.findById(req.params.id);
+  const flight = await Flight.findById(req.params.id).populate('tickets');
+
   flight.destinations.sort(
     (destA, destB) => Number(destA.arrival) - Number(destB.arrival)
   );
